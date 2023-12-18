@@ -1,9 +1,4 @@
-import ape
-from ape import chain, project, Contract
-import numpy as np
-import time
-
-WEEK = 60 * 60 * 24 * 7
+from ape import project, Contract
 
 def test_authentication(accounts):
     user = accounts[0]
