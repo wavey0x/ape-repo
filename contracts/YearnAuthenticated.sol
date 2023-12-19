@@ -16,7 +16,6 @@ contract YearnPrismaAuthenticated {
     }
 
     modifier enforceAuth() {
-        emit Test(true);
         require(isAuthenticated(msg.sender), "!authorized");
         _;
     }
