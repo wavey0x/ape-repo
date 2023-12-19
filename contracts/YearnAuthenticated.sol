@@ -10,7 +10,7 @@ import "./interfaces/ILocker.sol";
  */
 contract YearnPrismaAuthenticated {
     ILocker public immutable LOCKER;
-    event Test(bool);
+
     constructor(address _locker) {
         LOCKER = ILocker(_locker);
     }
@@ -22,9 +22,7 @@ contract YearnPrismaAuthenticated {
     }
 
     modifier onlyOwner() {
-        emit Test(true);
         require(msg.sender == address(LOCKER), "Only owner");
-        emit Test(false);
         _;
     }
 

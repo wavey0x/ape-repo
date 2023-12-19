@@ -8,11 +8,34 @@ def test_authentication(accounts):
     fee_receiver = user.deploy(project.YearnPrismaFeeReceiver, locker)
     amount = 200 * 10 ** 18
 
-
-    tx = fee_receiver.setTokenApproval1(
+    tx = fee_receiver.setTokenApproval2(
         yprisma,
         user,
         amount,
         sender = locker
     )
-    print(tx.events)
+
+    # This one passes.
+    print('This one passes an produces events --> ', len(tx.events))
+    assert yprisma.allowance(fee_receiver, user) > 0
+    print('Now we need to reset approval 0')
+    tx = fee_receiver.setTokenApproval2(
+        yprisma,
+        user,
+        0,
+        sender = locker
+    )
+    print('This one also passes and produces an event --> ', len(tx.events))
+    assert len(tx.events) > 0
+
+    tx = fee_receiver.setTokenApproval(
+        yprisma,
+        user,
+        amount,
+        sender = locker
+    )
+
+    # This txn succeeds, but somehow does not detect the approval event.
+    print('No events to be found --> ', len(tx.events))
+    assert yprisma.allowance(fee_receiver, user) > 0
+    assert len(tx.events) > 0
